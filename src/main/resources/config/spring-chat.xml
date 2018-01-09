@@ -19,10 +19,6 @@
 		default-autowire="byType"
 		>
 
-
-
-
-
 	<!--1.配置数据源 -->
 	<bean id="dataSource"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
@@ -30,17 +26,15 @@
 			<value>com.mysql.jdbc.Driver</value>
 		</property>
 		<property name="url">
-			<value>jdbc:mysql://192.168.11.122:3306/dcproduct</value>
+			<value>jdbc:mysql://117.48.214.107:3306/dcproduct?useUnicode=true&amp;characterEncoding=UTF-8</value>
 		</property>
 		<property name="username">
 			<value>root</value>
 		</property>
 		<property name="password">
-			<value>root</value>
+			<value>mysql</value>
 		</property>
 	</bean>
-
-
 
 	<!--2.整合mybatis配置文件 -->
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
@@ -52,7 +46,7 @@
 	</bean>
 
 	<bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="com/dascom/product/dao"></property>
+		<property name="basePackage" value="com/dascom/product"></property>
 		<property name="sqlSessionFactoryBeanName"  value="sqlSessionFactory"></property>
 	</bean>
 
@@ -73,9 +67,9 @@
     
     <aop:aspectj-autoproxy proxy-target-class="true"/>   -->
 	
-	
 	<!-- 4.声明式事务引用上面定义的事务管理器 -->
 	<tx:annotation-driven transaction-manager="transactionManager" />
+	
 	<!-- 5.加载日志文件等配置文件 -->
 	<bean id="propertyPlaceholderConfigurer"
 		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
@@ -85,6 +79,5 @@
 			</list>
 		</property>
 	</bean>
-	
-	
+		
 </beans>

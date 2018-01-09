@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dascom.product.dao.ProductMapper">
+  <resultMap id="BaseResultMap" type="com.dascom.product.entity.Product">
+    <id column="pid" jdbcType="INTEGER" property="pid" />
+    <result column="pname" jdbcType="VARCHAR" property="pname" />
+    <result column="pimage" jdbcType="VARCHAR" property="pimage" />
+    <result column="ptid" jdbcType="INTEGER" property="ptid" />
+    <result column="pdriveid" jdbcType="VARCHAR" property="pdriveid" />
+    <result column="pfirmwareid" jdbcType="VARCHAR" property="pfirmwareid" />
+    <result column="ptoolid" jdbcType="VARCHAR" property="ptoolid" />
+    <result column="pguideid" jdbcType="VARCHAR" property="pguideid" />
+    <result column="kitid" jdbcType="VARCHAR" property="kitid" />
+    <result column="softid" jdbcType="VARCHAR" property="softid" />
+    <result column="videoid" jdbcType="VARCHAR" property="videoid" />
+    <association column="ptid" property="product_Type" javaType="Product_Type" select="com.dascom.product.dao.ProductTypeMapper.findByPtname"></association>
+  </resultMap>
+  
+<select id="findCountPname" resultType="java.lang.Integer">
+ 	 select count(*) from product where pname like concat('%',#{key},'%')
+  </select>
+  
+   <select id="findByPagePname" resultMap="BaseResultMap">
+  select * from product 
+  <where>
+  	<if test="key!=null">
+  	pname like concat('%',#{key},'%')
+  	</if>
+  </where>
+  
+	limit #{begin},#{limit}
+  </select>
+  
+   <select id="findCountByKeyAndType" resultType="java.lang.Integer">
+ 	 select count(*) from product where pname like concat('%',#{key},'%') and ptid=#{type}
+  </select>
+  
+   <select id="findProductByKeyAndType" resultMap="BaseResultMap">
+  select * from product 
+  <where>
+  	<if test="key!=null">
+  	pname like concat('%',#{key},'%') and ptid=#{type}
+  	</if>
+  </where>
+  
+	limit #{begin},#{limit}
+  </select>
+  
+  <select id="findAllProductCount" resultType="java.lang.Integer">
+  select count(*) from product
+  </select>
+  
+   <select id="findAllProduct" resultMap="BaseResultMap">
+  select * from product 
+   
+	limit #{begin},#{limit}
+  </select>
+   
+ <select id="findByPid" resultMap="BaseResultMap">
+   select * from product  where pid =#{id}
+  </select>
+  
+  <insert id="addProduct" parameterType="com.dascom.product.entity.Product">
+    insert into product (pid, pname, pimage, 
+      ptid, pdriveid, pfirmwareid, 
+      ptoolid, pguideid, kitid, 
+      softid, videoid, pintroduce
+      )
+    values (#{pid,jdbcType=INTEGER}, #{pname,jdbcType=VARCHAR}, #{pimage,jdbcType=VARCHAR}, 
+      #{ptid,jdbcType=INTEGER}, #{pdriveid,jdbcType=VARCHAR}, #{pfirmwareid,jdbcType=VARCHAR}, 
+      #{ptoolid,jdbcType=VARCHAR}, #{pguideid,jdbcType=VARCHAR}, #{kitid,jdbcType=VARCHAR}, 
+      #{softid,jdbcType=VARCHAR}, #{videoid,jdbcType=VARCHAR}, #{pintroduce,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+ 
+  <delete id="deleteProduct" parameterType="com.dascom.product.entity.Product">
+    delete from product
+    where pid = #{pid,jdbcType=INTEGER}
+  </delete>
+
+   <update id="updateProduct" parameterType="com.dascom.product.entity.Product">
+    update product
+    set pname = #{pname,jdbcType=VARCHAR},
+      pimage = #{pimage,jdbcType=VARCHAR},
+      ptid = #{ptid,jdbcType=INTEGER},
+      pdriveid = #{pdriveid,jdbcType=VARCHAR},
+      pfirmwareid = #{pfirmwareid,jdbcType=VARCHAR},
+      ptoolid = #{ptoolid,jdbcType=VARCHAR},
+      pguideid = #{pguideid,jdbcType=VARCHAR},
+      kitid = #{kitid,jdbcType=VARCHAR},
+      softid = #{softid,jdbcType=VARCHAR},
+      videoid = #{videoid,jdbcType=VARCHAR},
+      pintroduce = #{pintroduce,jdbcType=LONGVARCHAR}
+    where pid = #{pid,jdbcType=INTEGER}
+  </update>
+
+
+  <select id="findProductByTypeID" resultMap="BaseResultMap">
+   select * from product  where ptid =#{typeID}
+  </select>
+  
+  <select id="findAllProdut" resultMap="BaseResultMap">
+   select * from product  
+  </select>
+  
+</mapper>

@@ -1,243 +1,247 @@
 package com.dascom.product.serviceImpl;
 
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import com.dascom.product.dao.CpResourceMapper;
-import com.dascom.product.dao.CpResourceSetMapper;
-import com.dascom.product.dao.CpSoftwareMapper;
-import com.dascom.product.entity.CpResource;
-import com.dascom.product.entity.CpResourceExample;
-import com.dascom.product.entity.CpResourceSet;
-import com.dascom.product.entity.CpSoftware;
-import com.dascom.product.entity.UpdateInfo;
+import com.dascom.product.dao.ProductVideoMapper;
+import com.dascom.product.dao.SoftwareMapper;
+import com.dascom.product.entity.Product_Video;
+import com.dascom.product.entity.Software;
+import com.dascom.product.entity.Software_Type;
 import com.dascom.product.service.ResourceService;
-import com.dascom.product.util.PageBeanUtil;
-import com.dascom.product.util.PagedResult;
-import com.github.pagehelper.PageHelper;
+import com.dascom.product.util.PageBean;
 @Service
 public class ResourceServiceImpl implements ResourceService {
-	
-	@Autowired
-	private CpResourceMapper cpResourceMapper;
-	@Autowired
-	private CpResourceSetMapper cpResourceSetMapper;
-	
-	@Autowired
-	private CpSoftwareMapper cpSoftwareMapper;
-	
+
+	@Autowired 
+	private ProductVideoMapper productVideoMapper;
+	@Autowired 
+	private SoftwareMapper softwareMapper;
 	
 	@Override
-	public UpdateInfo findUpdateInfo() {
-		//分支+主干
+	public PageBean<Product_Video> findVideoPname(String keyword, int page) {
+		PageBean<Product_Video> pageBean = new PageBean<Product_Video>();
+		//设置总页数
+		pageBean.setPage(page);
+		//设置当前每页显示的记录数
+		int limit = 6;
+		pageBean.setLimit(limit);
+		//设置总记录数
+		int totalCount = 0;
+		totalCount = productVideoMapper.findCountPname(keyword);
+		pageBean.setTotalCount(totalCount);
+		//设置总页数
+		int totalPage = 0;
+		if(totalCount % limit == 0)
+		{
+			totalPage = totalCount / limit;
+		}else{
+			totalPage = totalCount / limit + 1;
+		}
+		if(totalPage==0){
+			totalPage=1;
+		}
+		pageBean.setTotalPage(totalPage);
+		//从哪页开始
+		int begin = (page - 1) * limit;
+		//每页显示的数据集合
+		List<Product_Video> list = productVideoMapper.findVideoPname(keyword, begin, limit);
+		pageBean.setList(list);
+		return pageBean;
+	}
+
+	@Override
+	public PageBean<Product_Video> findVideoAll(int page) {
+		PageBean<Product_Video> pageBean = new PageBean<Product_Video>();
+		pageBean.setPage(page);
+		int limit = 6;
+		pageBean.setLimit(limit);
+		int totalCount = 0;
+		totalCount = productVideoMapper.findCountAll();
+		pageBean.setTotalCount(totalCount);
+		int totalPage = 0;
+		if(totalCount % limit == 0)
+		{
+			totalPage = totalCount / limit;
+		}else{
+			totalPage = totalCount / limit + 1;
+		}
+		if(totalPage==0){
+			totalPage=1;
+		}
+		pageBean.setTotalPage(totalPage);
+		int begin = (page - 1) * limit;
+		List<Product_Video> list = productVideoMapper.findVideoAll(begin, limit);
+		pageBean.setList(list);
+		return pageBean;
+	}
+
+	@Override
+	public boolean updateVideo(Product_Video product_Video) {
+		boolean result=false;
+		try{
+			productVideoMapper.update(product_Video);
+			result=true;
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	@Override
+	public boolean insertVideo(Product_Video product_Video) {
+		boolean result=false;
+		int  i=productVideoMapper.insert(product_Video);
+		if(i>0){
+			result=true;
+		}
+		return result;
+	}
+
+	@Override
+	public boolean deleteVideoById(Product_Video product_Video) {
+		boolean result=false;
+		try{
+			productVideoMapper.delete(product_Video);
+			result=true;
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	@Override
+	public Product_Video findByVid(int vid) {
+		Product_Video video=new Product_Video();
+		video=productVideoMapper.findByVid(vid);
+		if(video != null){
+			return video;
+		}
 		return null;
 	}
 
 	@Override
-	public PagedResult<CpResourceExample> findApp(Integer pageNumber,
-			Integer pageSize) {
-		if(pageNumber!=null&&pageSize!=null)
-			PageHelper.startPage(pageNumber,pageSize);
-		
-		return PageBeanUtil.toPagedResult(cpResourceMapper.selectByTypeTitle("应用软件",null));
-	}
-
-	@Override
-	public List<CpSoftware> findAppEdition(Integer rId) {
-		return cpSoftwareMapper.selectByRid(rId);
-	}
-
-
-
-	@Override
-	public int addresource(String type, String title,String name, MultipartFile file,String imgFilePath, String filePath, String describe) {
-		
-		CpResource res=new CpResource();
-		res.setCoverUrl(" ");
-		if(imgFilePath!=null){
-			res.setCoverUrl(imgFilePath);
+	public PageBean<Software> findSoftwareAll(int page) {
+		PageBean<Software> pageBean=new PageBean<Software>();
+		pageBean.setPage(page);
+		int limit = 6;
+		pageBean.setLimit(limit);
+		int totalCount = 0;
+		totalCount = softwareMapper.findCountAll();
+		pageBean.setTotalCount(totalCount);
+		int totalPage = 0;
+		if(totalCount % limit == 0)
+		{
+			totalPage = totalCount / limit;
+		}else{
+			totalPage = totalCount / limit + 1;
 		}
-		//数据库url不能为空
-		res.setUrl(" ");
-		if(file!=null){
-			res.setSize(file.getSize()+"");
-			res.setUrl(filePath);
+		if(totalPage==0){
+			totalPage=1;
 		}
-		res.setDescribe(describe);
-		res.setTime(new Date());
-		res.setTitle(title);
-		res.setName(name);
-		//获取该类型的id
-		CpResourceSet ress=cpResourceSetMapper.selectByTitle(type);
-		res.setType(ress.getId());
-		
-		return cpResourceMapper.insertSelective(res);
+		pageBean.setTotalPage(totalPage);
+		int begin = (page - 1) * limit;
+		List<Software> softList=softwareMapper.getAllSoftware(begin, limit);
+		pageBean.setList(softList);
+		return pageBean;
 	}
 
 	@Override
-	public int delByKey(Integer rid) {
-		return cpResourceMapper.deleteByPrimaryKey(rid);
+	public Software findSoftById(int id) {
+		Software software=softwareMapper.getSoftwareById(id);
+		return software;
 	}
 
 	@Override
-	public int delByKeyList(String rid) {
-		int num=0;
-		String[] ridlist=rid.split(",");
-		for (String id : ridlist) {
-			num =num+cpResourceMapper.deleteByPrimaryKey(Integer.valueOf(id));
-		}
-		return num;
-	}
-
-	@Override
-	public int updateresource(CpResource res) {
-		return cpResourceMapper.updateByPrimaryKeySelective(res);
-	}
-
-	@Override
-	public CpResource findByRid(Integer rid) {
-		return cpResourceMapper.selectByPrimaryKey(rid);
-	}
-
-	@Override
-	public PagedResult<CpResourceExample> findApp(String typeTitle,Integer pageNumber,
-			Integer pageSize, String like) {
-		if(pageNumber!=null&&pageSize!=null)
-			PageHelper.startPage(pageNumber,pageSize);
-		
-		return PageBeanUtil.toPagedResult(cpResourceMapper.selectByTypeTitle(typeTitle,like!=null?"%"+like+"%":"%%" ));
-	}
-
-	@Override
-	public PagedResult<CpSoftware> findAppVersion(Integer pageNumber,
-			Integer pageSize, Integer rId) {
-		if(pageNumber!=null&&pageSize!=null)
-			PageHelper.startPage(pageNumber,pageSize);
-		return  PageBeanUtil.toPagedResult(cpSoftwareMapper.selectByRid(rId));
-		
-	}
-
-	@Override
-	public int addsoft(CpSoftware soft) {
-		//验证版本名字是否重复
-		CpSoftware s=new CpSoftware();
-		s.setVersionNum(soft.getVersionNum());
-		s.setSystem(soft.getSystem());
-		s.setRid(soft.getRid());
-		if(cpSoftwareMapper.selectByExample (s).size()>0){
-			return -1;
-		}
-		//验证该  支持系统是否有最新版
-		if(soft.getIsNew()!=null){
-			if(soft.getIsNew()==1){
-				s=new CpSoftware();
-				s.setSystem(soft.getSystem());
-				s.setIsNew(soft.getIsNew());
-				s.setRid(soft.getRid());
-				if(cpSoftwareMapper.selectByExample (s).size()>0){
-					return -2;
-				}
+	public PageBean<Software> findSoftwareByTypeAndName(String keyword,
+			Integer type, int page) {
+		PageBean<Software> pageBean=new PageBean<Software>();
+		pageBean.setPage(page);
+		int limit = 6;
+		pageBean.setLimit(limit);
+		int totalCount = 0;
+		if(type == 0){
+			totalCount=softwareMapper.findCountByKey(keyword);
+			pageBean.setTotalCount(totalCount);
+			int totalPage = 0;
+			if(totalCount % limit == 0)
+			{
+				totalPage = totalCount / limit;
+			}else{
+				totalPage = totalCount / limit + 1;
 			}
-		}
-		
-		//设置添加时间
-		soft.setTime(new Date());
-		int number =  cpSoftwareMapper.insertSelective(soft);
-		if(number>0){
-			//删除上传表对应数据
-		}
-		return number;
-	}
-	
-	@Override
-	public int editSoft(CpSoftware soft) {
-		//验证版本名字是否重复
-		CpSoftware s=new CpSoftware();
-		s.setVersionNum(soft.getVersionNum());
-		s.setSystem(soft.getSystem());
-		s.setRid(soft.getRid());
-		for (CpSoftware item : cpSoftwareMapper.selectByExample (s)) {
-			if(item.getId()!=soft.getId()){
-				return -1;
+			if(totalPage==0){
+				totalPage=1;
 			}
-		}
-		//验证该  支持系统是否有最新版
-		if(soft.getIsNew()!=null){
-			if(soft.getIsNew()==1){
-				s=new CpSoftware();
-				s.setSystem(soft.getSystem());
-				s.setIsNew(1);
-				s.setRid(soft.getRid());
-				for (CpSoftware item : cpSoftwareMapper.selectByExample (s)) {
-					if(item.getId()!=soft.getId()){
-						return -2;
-					}
-				}
+			pageBean.setTotalPage(totalPage);
+			int begin = (page - 1) * limit;
+			List<Software> list=softwareMapper.findSoftwareByKey(keyword, begin, limit);
+			pageBean.setList(list);
+		}else{
+			totalCount=softwareMapper.findCountByKeyAndType(keyword, type);
+			pageBean.setTotalCount(totalCount);
+			int totalPage = 0;
+			if(totalCount % limit == 0)
+			{
+				totalPage = totalCount / limit;
+			}else{
+				totalPage = totalCount / limit + 1;
 			}
-		}
-		if(soft.getUrl()!=null){
-			if(soft.getUrl().equals("")){
-				return cpSoftwareMapper.updateByPrimaryKeySelective(soft);
+			if(totalPage==0){
+				totalPage=1;
 			}
+			pageBean.setTotalPage(totalPage);
+			int begin = (page - 1) * limit;
+			List<Software> list=softwareMapper.findSoftwareByTypeAndKey(keyword, type, begin, limit);
+			pageBean.setList(list);
 		}
-		@SuppressWarnings("unused")
-		CpSoftware s2=cpSoftwareMapper.selectByPrimaryKey(soft.getId());
-		int number= cpSoftwareMapper.updateByPrimaryKeySelective(soft);
-		if(number>0){
-			//删除原来应用软件版本的本地文件
+		return pageBean;
+	}
+
+	@Override
+	public boolean insertSoftware(Software software) {
+		boolean result=false;
+		int i=softwareMapper.addSoftware(software);
+		if(i>0){
+			result=true;
 		}
-		return number;
+		return result;
 	}
-	
+
 	@Override
-	public int delVersion(String id) {
-		int num=0;
-		String[] ridlist=id.split(",");
-		for (String item : ridlist) {
-			num =num+cpSoftwareMapper.deleteByPrimaryKey(Integer.valueOf(item));
+	public boolean updateSoftware(Software software) {
+		boolean result=false;
+		try{
+			softwareMapper.updateSoftware(software);
+			result=true;
+		}catch(Exception e){
+			e.printStackTrace();
 		}
-		return num;
+		return result;
 	}
 
 	@Override
-	public CpSoftware findVersionBykey(Integer id) {
-		return cpSoftwareMapper.selectByPrimaryKey(id);
-	}
-
-	
-
-	@Override
-	public CpSoftware findSoftwareByVersonInfo(String title, String system) {
-		return cpSoftwareMapper.findSoftwareBySoftware(title,system);
-	}
-
-
-	@Override
-	public CpSoftware findSoftwareByVersion(String name) {
-		return cpSoftwareMapper.selectSoftwareByVersion(name);
+	public boolean deleteSoftware(Software software) {
+		boolean result=false;
+		try{
+			softwareMapper.delSoftware(software);
+			result=true;
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return result;
 	}
 
 	@Override
-	public CpSoftware findSoftwareByKey(String name) {
-		
-		return cpSoftwareMapper.selectByPrimaryKey(Integer.valueOf(name));
+	public List<Software_Type> findAllSoftwareType() {
+		List<Software_Type> type=softwareMapper.findAllSoftwareType();
+		return type;
 	}
-
 
 	@Override
-	public PagedResult<CpResourceExample> findResource(String typeName,
-			Integer pageNumber, Integer pageSize) {
-		if(pageNumber!=null&&pageSize!=null)
-			PageHelper.startPage(pageNumber,pageSize);
-		
-		return PageBeanUtil.toPagedResult(cpResourceMapper.selectByTypeTitle(typeName,null));
+	public Software_Type findSoftwareTypeById(int id) {	
+		return softwareMapper.findSoftWareTypeById(id);
 	}
-
-
-	
-
 }

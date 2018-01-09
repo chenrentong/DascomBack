@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dascom.product.dao.SoftwareMapper">
+  <resultMap id="BaseResultMap" type="com.dascom.product.entity.Software">
+  
+    <id column="sid" jdbcType="INTEGER" property="sid" />
+    <result column="sname" jdbcType="VARCHAR" property="sname" />
+    <result column="spath" jdbcType="VARCHAR" property="spath" /> 
+    <result column="size" jdbcType="VARCHAR" property="size" />
+     <result column="stid" jdbcType="INTEGER" property="stid" />
+    <result column="suffix" jdbcType="VARCHAR" property="suffix" />
+    <association column="stid" property="software_Type" javaType="Software_Type" select="com.dascom.product.dao.SoftwareMapper.findSoftWareTypeById"></association>
+  </resultMap>
+  
+   <resultMap id="BaseResultMap2" type="com.dascom.product.entity.Software_Type">
+    <id column="stid" jdbcType="INTEGER" property="stid" />
+    <result column="stname" jdbcType="VARCHAR" property="stname" />
+  </resultMap>
+  
+  <select id="findSoftWareTypeById" resultMap="BaseResultMap2">
+   select * from software_type  where stid =#{id}
+  </select>
+  
+   <select id="findAllSoftwareType" resultMap="BaseResultMap2">
+   select * from software_type  
+  </select>
+  
+   <delete id="delSoftware" parameterType="com.dascom.product.entity.Software">
+    delete from software
+     where sid = #{sid,jdbcType=INTEGER}
+  </delete>
+  
+   <insert id="addSoftware" parameterType="com.dascom.product.entity.Software">
+    insert into software (sid, sname, spath, 
+      stid, size, suffix)
+    values (#{sid,jdbcType=INTEGER}, #{sname,jdbcType=VARCHAR}, #{spath,jdbcType=VARCHAR}, 
+      #{stid,jdbcType=INTEGER}, #{size,jdbcType=VARCHAR}, #{suffix,jdbcType=VARCHAR})
+  </insert>
+ 
+ <update id="updateSoftware" parameterType="com.dascom.product.entity.Software">
+   update software
+    set sname = #{sname,jdbcType=VARCHAR},
+      spath = #{spath,jdbcType=VARCHAR},
+      stid = #{stid,jdbcType=INTEGER},
+      size = #{size,jdbcType=VARCHAR},
+      suffix = #{suffix,jdbcType=VARCHAR}
+    where sid = #{sid,jdbcType=INTEGER}
+  </update>
+  
+    <select id="findSoftwareByTypeAndKey" resultMap="BaseResultMap">
+  select * from software 
+  <where>
+  	<if test="keyword!=null">
+  	sname like concat('%',#{keyword},'%') and stid=#{type}
+  	</if>
+  </where>
+  
+	limit #{begin},#{limit}
+  </select>
+  
+  <select id="findCountByKeyAndType" resultType="java.lang.Integer">
+ 	 select count(*) from software where sname like concat('%',#{keyword},'%') and stid=#{type}
+  </select>
+  
+   <select id="findSoftwareByKey" resultMap="BaseResultMap">
+  select * from software 
+  <where>
+  	<if test="keyword!=null">
+  	sname like concat('%',#{keyword},'%') 
+  	</if>
+  </where>
+  
+	limit #{begin},#{limit}
+  </select>
+  
+  <select id="findCountByKey" resultType="java.lang.Integer">
+ 	 select count(*) from software where sname like concat('%',#{keyword},'%') 
+  </select>
+  
+   <select id="getSoftwareById" resultMap="BaseResultMap">
+ 	 select * from software where sid =#{id}
+  </select>
+  
+   <select id="getAllSoftware" resultMap="BaseResultMap">
+  select * from software 
+   
+	limit #{begin},#{limit}
+  </select>
+  
+  <select id="findCountAll" resultType="java.lang.Integer">
+  select count(*) from software
+  </select>
+  
+</mapper>

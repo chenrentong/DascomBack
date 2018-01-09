@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dascom.product.dao.ProductVideoMapper">
+  <resultMap id="BaseResultMap" type="com.dascom.product.entity.Product_Video">
+    <id column="pvid" jdbcType="INTEGER" property="pvid" />
+    <result column="pvname" jdbcType="VARCHAR" property="pvname" />
+    <result column="pvpath" jdbcType="VARCHAR" property="pvpath" />
+    <result column="pid" jdbcType="INTEGER" property="pid" />
+    <result column="suffix" jdbcType="VARCHAR" property="suffix" />
+    <result column="size" jdbcType="VARCHAR" property="size" />
+  </resultMap>
+  
+  <select id="findByVid" resultMap="BaseResultMap">
+   select * from product_video  where pvid =#{vid}
+  </select>
+  
+   <delete id="delete" parameterType="com.dascom.product.entity.Product_Video">
+    delete from product_video
+    where pvid = #{pvid,jdbcType=INTEGER}
+  </delete>
+  
+   <insert id="insert" parameterType="com.dascom.product.entity.Product_Video">
+    insert into product_video (pvid, pvname, pvpath, 
+      pid, suffix, size)
+    values (#{pvid,jdbcType=INTEGER}, #{pvname,jdbcType=VARCHAR}, #{pvpath,jdbcType=VARCHAR}, 
+      #{pid,jdbcType=INTEGER}, #{suffix,jdbcType=VARCHAR}, #{size,jdbcType=VARCHAR})
+  </insert>
+ 
+ <update id="update" parameterType="com.dascom.product.entity.Product_Video">
+  update product_video
+    set pvname = #{pvname,jdbcType=VARCHAR},
+      pvpath = #{pvpath,jdbcType=VARCHAR},
+      pid = #{pid,jdbcType=INTEGER},
+      suffix = #{suffix,jdbcType=VARCHAR},
+      size = #{size,jdbcType=VARCHAR}
+    where pvid = #{pvid,jdbcType=INTEGER}
+  </update>
+  
+   <select id="findVideoAll" resultMap="BaseResultMap">
+  select * from product_video 
+   
+	limit #{begin},#{limit}
+  </select>
+   
+  <select id="findCountAll" resultType="java.lang.Integer">
+  select count(*) from product_video
+  </select>
+  
+   <select id="findCountPname" resultType="java.lang.Integer">
+ 	 select count(*) from product_video where pvname like concat('%',#{keyword},'%')
+  </select>
+  
+   <select id="findVideoPname" resultMap="BaseResultMap">
+  select * from product_video 
+  <where>
+  	<if test="keyword!=null">
+  	pvname like concat('%',#{keyword},'%')
+  	</if>
+  </where>
+  
+	limit #{begin},#{limit}
+  </select>
+ 
+
+</mapper>

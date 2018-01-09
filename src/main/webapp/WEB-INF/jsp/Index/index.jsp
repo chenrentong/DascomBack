@@ -37,12 +37,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             <a aria-hidden="false" class="nav-toggle Hui-iconfont visible-xs" href="javascript:;">&#xe667;</a>
             <nav id="Hui-userbar" class="nav navbar-nav navbar-userbar hidden-xs">
                 <ul class="cl">
-                    <li><%-- ${cpUser.cpAuthGroup.title} --%></li>
+                    <li>${cpUser.cpAuthGroup.title}</li>
                     <li class="dropDown dropDown_hover">
                         <a href="#" class="dropDown_A">${cpUser.username}<i class="Hui-iconfont">&#xe6d5;</i></a>
                         <ul class="dropDown-menu menu radius box-shadow">
-                            <li><a href="../Login/index.html">切换账户</a></li>
-                            <li><a href="{:U('Login/logout')}">退出</a></li>
+                            <li><a href="">切换账户</a></li>
+                            <li><a href="">退出</a></li>
                         </ul>
                     </li>
                     <li id="Hui-skin" class="dropDown right dropDown_hover"> <a href="javascript:;" class="dropDown_A" title="换肤"><i class="Hui-iconfont" style="font-size:18px">&#xe62a;</i></a>
@@ -62,70 +62,33 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 </header>
 <aside class="Hui-aside">
     <div class="menu_dropdown bk_2">
-        <!-- <dl id="menu-picture">
-            <dt><i class="Hui-iconfont">&#xe616;</i> 用户中心<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
-            <dd>
-                <ul>
-                    <li><a data-href="../User/personal-manasege.html" data-title="个人信息" href="javascript:void(0)">个人信息</a></li>
-                    <li><a data-href="../User/updatePwd.html" data-title="修改密码" href="javascript:void(0)">修改密码</a></li>
-                </ul>
-            </dd>
-        </dl> -->
         <dl id="menu-resource">
             <dt><i class="Hui-iconfont">&#xe63e;</i> 资源管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
             <dd>
                 <ul>
-                   <!--  <li><a data-href="../Resource/settingList.html" data-title="资源设置" href="javascript:void(0)">资源设置</a></li>
-                    <li><a data-href="../Resource/imgList.html" data-title="图片管理" href="javascript:void(0)">图片管理</a></li>
-                    <li><a data-href="../Resource/videoList.html" data-title="视频管理" href="javascript:void(0)">视频管理</a></li>
-                    <li><a data-href="../Resource/driveList.html" data-title="驱动管理" href="javascript:void(0)">驱动管理</a></li>
-                    <li><a data-href="../Resource/firmwareList.html" data-title="固件管理" href="javascript:void(0)">固件管理</a></li>
-                    <li><a data-href="../Resource/toolList.html" data-title="管理工具" href="javascript:void(0)">管理工具</a></li>
-                    <li><a data-href="../Resource/guideList.html" data-title="用户指南" href="javascript:void(0)">用户指南</a></li>
-                     -->
-                    <li><a data-href="findAppPage" data-title="应用软件" href="javascript:void(0)">应用软件</a></li>
-                    <li><a data-href="findSDKPage" data-title="二次开发包" href="javascript:void(0)">二次开发包</a></li>
+                    <li><a data-href="/DascomBack/videoList" data-title="视频管理" href="javascript:void(0)">视频管理</a></li>
+                    <li><a data-href="/DascomBack/downloadList" data-title="下载管理" href="javascript:void(0)">下载管理</a></li>
                 </ul>
             </dd>
         </dl>
-        <dl id="menu-solves">
-            <dt><i class="Hui-iconfont">&#xe63e;</i> 方案管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
-            <dd>
-                <ul>
-                    <li><a data-href="findsolveList" data-title="解决方案" href="javascript:void(0)">解决方案</a></li>
-                </ul>
-            </dd>
-        </dl>
-       <!--  <dl id="menu-product">
+        <dl id="menu-product">
             <dt><i class="Hui-iconfont">&#xe620;</i> 产品管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
             <dd>
                 <ul>
-                    <li><a data-href="../Product/classifyList.html" data-title="分类管理" href="javascript:void(0)">分类管理</a></li>
-                    <li><a data-href="../Product/productList.html" data-title="产品管理" href="javascript:void(0)">产品管理</a></li>
-                </ul>
-            </dd>
-        </dl> -->
-        <dl id="menu-admin">
-            <dt><i class="Hui-iconfont">&#xe62d;</i> 权限管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
-            <dd>
-                <ul>
-                    <!-- <li><a data-href="../Admin/jurisdiction.html" data-title="权限管理" href="javascript:void(0)">权限管理</a></li>
-                    <li><a data-href="../Admin/role.html" data-title="角色管理" href="javascript:void(0)">角色管理</a></li> -->
-                    <li><a data-href="findUserList" data-title="管理员列表" href="javascript:void(0)">管理员列表</a></li>
+                    <li><a data-href="/DascomBack/classifyList" data-title="分类管理" href="javascript:void(0)">分类管理</a></li>
+                    <li><a data-href="/DascomBack/productList" data-title="产品管理" href="javascript:void(0)">产品管理</a></li>
                 </ul>
             </dd>
         </dl>
-        <!-- <dl id="menu-system">
-            <dt><i class="Hui-iconfont">&#xe62e;</i> 系统管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+        <dl id="menu-admin">
+            <dt><i class="Hui-iconfont">&#xe62d;</i> 合作伙伴<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
             <dd>
                 <ul>
-                    <li><a data-href="{:U('System/system')}" data-title="系统设置" href="javascript:void(0)">系统设置</a></li>
-                    <li><a data-href="{:U('System/column')}" data-title="栏目管理" href="javascript:void(0)">栏目管理</a></li>
-                    <li><a data-href="{:U('System/dictionary')}" data-title="数据字典" href="javascript:void(0)">数据字典</a></li>
-                    <li><a data-href="../System/log.html" data-title="操作日志" href="javascript:void(0)">操作日志</a></li>
+                    <li><a data-href="/DascomBack/shareInformationList" data-title="资源分享" href="javascript:void(0)">资源分享</a></li>
+                    <li><a data-href="/DascomBack/partnersList" data-title="伙伴列表" href="javascript:void(0)">公司列表</a></li>
                 </ul>
             </dd>
-        </dl> -->
+        </dl>        
     </div>
 </aside>
 <div class="dislpayArrow hidden-xs"><a class="pngfix" href="javascript:void(0);" onClick="displaynavbar(this)"></a></div>

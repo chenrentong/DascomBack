@@ -28,7 +28,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <div class="page-container">
     <p class="f-20 text-success">欢迎登录得实产品管理系统！</p>
     <p>登录IP地址：${ip}</p>
-    <!-- <table class="table table-border table-bordered table-bg">
+    <table class="table table-border table-bordered table-bg">
         <thead>
         <tr>
             <th colspan="4" scope="col">信息更新统计</th>
@@ -43,36 +43,36 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         <tbody>
         <tr class="text-c">
             <td>总数</td>
-            <td>{$data.user.all}</td>
-            <td>{$data.goods.all}</td>
-            <td>{$data.res.all}</td>
+            <td></td>
+            <td></td>
+            <td></td>
         </tr>
         <tr class="text-c">
             <td>今日</td>
-            <td>{$data.user.today}</td>
-            <td>{$data.goods.today}</td>
-            <td>{$data.res.today}</td>
+            <td></td>
+            <td></td>
+            <td></td>
         </tr>
         <tr class="text-c">
             <td>昨日</td>
-            <td>{$data.user.yesterday}</td>
-            <td>{$data.goods.yesterday}</td>
-            <td>{$data.res.yesterday}</td>
+            <td></td>
+            <td></td>
+            <td></td>
         </tr>
         <tr class="text-c">
             <td>本周</td>
-            <td>{$data.user.week}</td>
-            <td>{$data.goods.week}</td>
-            <td>{$data.res.week}</td>
+            <td></td>
+            <td></td>
+            <td></td>
         </tr>
         <tr class="text-c">
             <td>本月</td>
-            <td>{$data.user.month}</td>
-            <td>{$data.goods.month}</td>
-            <td>{$data.res.month}</td>
+            <td></td>
+            <td></td>
+            <td></td>
         </tr>
         </tbody>
-    </table> -->
+    </table>
    <!-- <table class="table table-border table-bordered table-bg mt-20">
         <thead>
         <tr>

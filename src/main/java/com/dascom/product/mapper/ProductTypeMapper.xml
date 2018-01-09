@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dascom.product.dao.ProductTypeMapper">
+  <resultMap id="BaseResultMap" type="com.dascom.product.entity.Product_Type">
+    <id column="ptid" jdbcType="INTEGER" property="ptid" />
+    <result column="ptname" jdbcType="VARCHAR" property="ptname" />
+    <result column="ptimage" jdbcType="VARCHAR" property="ptimage" />
+  </resultMap>
+  
+  <select id="findCountAll" resultType="java.lang.Integer">
+  select count(*) from product_type
+  </select>
+  
+   <select id="findByPtAll" resultMap="BaseResultMap">
+  select * from product_type 
+   
+	limit #{begin},#{limit}
+  </select>
+   
+ <select id="findByPtname" resultMap="BaseResultMap">
+   select * from product_type  where ptid =#{ptid}
+  </select>
+  
+   <select id="findCountPname" resultType="java.lang.Integer">
+ 	 select count(*) from product_type where ptname like concat('%',#{typeName},'%')
+  </select>
+  
+   <select id="findPtByName" resultMap="BaseResultMap">
+  select * from product_type 
+  <where>
+  	<if test="typeName!=null">
+  	ptname like concat('%',#{typeName},'%')
+  	</if>
+  </where>
+  
+	limit #{begin},#{limit}
+  </select>
+ 
+  <insert id="addProductType" parameterType="com.dascom.product.entity.Product_Type">
+     insert into product_type (ptid, ptname, ptimage
+      )
+    values (#{ptid,jdbcType=INTEGER}, #{ptname,jdbcType=VARCHAR}, #{ptimage,jdbcType=VARCHAR}
+      )
+  </insert>
+ 
+ <update id="updateProductType" parameterType="com.dascom.product.entity.Product_Type">
+  update product_type
+    set ptname = #{ptname,jdbcType=VARCHAR},
+      ptimage = #{ptimage,jdbcType=VARCHAR}
+    where ptid = #{ptid,jdbcType=INTEGER}
+  </update>
+ 
+  <delete id="deleteProductType" parameterType="com.dascom.product.entity.Product_Type">
+    delete from product_type
+    where ptid = #{ptid,jdbcType=INTEGER}
+  </delete>
+ 
+  <select id="findAllPt" resultMap="BaseResultMap">
+   select * from product_type  
+  </select>
+  
+   
+</mapper>

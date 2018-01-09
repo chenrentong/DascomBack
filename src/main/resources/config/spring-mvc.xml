@@ -54,56 +54,9 @@
 		<property name="suffix" value=".jsp"></property>
 	</bean>
 
-	<!--启用shiro注解 -->
-	<bean
-		class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
-		depends-on="lifecycleBeanPostProcessor">
-		<property name="proxyTargetClass" value="true" />
-	</bean>
-	<bean
-		class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
-		<property name="securityManager" ref="securityManager" />
-	</bean>
-	<!-- shiro为集成springMvc 拦截异常，使用注解时无权限的跳转 -->
-	<bean
-		class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
-		<property name="exceptionMappings">
-			<props>
-				<!-- 这里你可以根据需要定义N多个错误异常转发 -->
-				<prop key="org.apache.shiro.authz.UnauthorizedException">redirect:error2.do</prop>
-				<prop key="org.apache.shiro.authz.UnauthenticatedException">redirect:error2.do</prop>
-				<prop key="java.lang.IllegalArgumentException">redirect:error.do</prop>  <!-- 参数错误(bizError.jsp) -->
-				<prop key="java.lang.Exception">redirect:error.do</prop>  <!-- 其他错误为'未定义错误'(unknowError.jsp) -->
-			</props>
-		</property>
-	</bean>
 	<!-- 配置静态资源,不被DispatherServlet处理 -->
 	<mvc:resources location="/" mapping="/**"/>
 	
-	 
-	
-	<!-- 解决上传文件解释不到数据的问题 -->	
-	<!-- <bean id="multipartResolver" class="com.dascom.product.rewrite.MyMultipartResolver">  
-		<property name="excludeUrls" value="Display"/> -->  
-		<!-- url中带有example的http请求就不会被multipartResolver先解析-->  
-	<!-- </bean> -->
-	
-	
-	<!-- <mvc:annotation-driven validator="validator"
-        conversion-service="conversion-service" />
-    <bean id="validator"
-        class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
-        <property name="providerClass" value="org.hibernate.validator.HibernateValidator" />
-        <property name="validationMessageSource" ref="validatemessageSource" />
-    </bean>
-    <bean id="conversion-service"
-        class="org.springframework.format.support.FormattingConversionServiceFactoryBean" />
-    <bean id="validatemessageSource"
-        class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
-        <property name="basename" value="classpath:i18n" />
-        <property name="fileEncodings" value="utf-8" />
-        <property name="cacheSeconds" value="120" />
-    </bean> -->
 	
 </beans>
 	

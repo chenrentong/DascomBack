@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dascom.product.dao.PartnersMapper">
+  <resultMap id="BaseResultMap" type="com.dascom.product.entity.Partners">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="companyName" jdbcType="VARCHAR" property="companyName" />
+    <result column="legalName" jdbcType="VARCHAR" property="legalName" />
+    <result column="dutyCode" jdbcType="VARCHAR" property="dutyCode" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="fax" jdbcType="VARCHAR" property="fax" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="url" jdbcType="VARCHAR" property="url" />
+    <result column="postCountry" jdbcType="VARCHAR" property="postCountry" />
+    <result column="postProvince" jdbcType="VARCHAR" property="postProvince" />
+    <result column="postCity" jdbcType="VARCHAR" property="postCity" />
+    <result column="postArea" jdbcType="VARCHAR" property="postArea" />
+    <result column="postStreet" jdbcType="VARCHAR" property="postStreet" />
+    <result column="postNumber" jdbcType="VARCHAR" property="postNumber" />
+    <result column="companyCountry" jdbcType="VARCHAR" property="companyCountry" />
+    <result column="companyProvince" jdbcType="VARCHAR" property="companyProvince" />
+    <result column="companyCity" jdbcType="VARCHAR" property="companyCity" />
+    <result column="companyArea" jdbcType="VARCHAR" property="companyArea" />
+    <result column="companyStreet" jdbcType="VARCHAR" property="companyStreet" />
+    <result column="companyPostNumber" jdbcType="VARCHAR" property="companyPostNumber" />
+    <result column="personName" jdbcType="VARCHAR" property="personName" />
+    <result column="personLastName" jdbcType="VARCHAR" property="personLastName" />
+    <result column="personCall" jdbcType="VARCHAR" property="personCall" />
+    <result column="personFunction" jdbcType="VARCHAR" property="personFunction" />
+    <result column="personEmail" jdbcType="VARCHAR" property="personEmail" />
+    <result column="personPhone" jdbcType="VARCHAR" property="personPhone" />
+    <result column="personPostNumber" jdbcType="VARCHAR" property="personPostNumber" />
+    <result column="personMobilePhone" jdbcType="VARCHAR" property="personMobilePhone" />
+    <result column="personCountry" jdbcType="VARCHAR" property="personCountry" />
+    <result column="personProvince" jdbcType="VARCHAR" property="personProvince" />
+    <result column="personCity" jdbcType="VARCHAR" property="personCity" />
+    <result column="personAllowType" jdbcType="VARCHAR" property="personAllowType" />
+    <result column="permission" jdbcType="VARCHAR" property="permission" />
+    <result column="rank" jdbcType="VARCHAR" property="rank" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="uid" jdbcType="VARCHAR" property="uid" />
+    <result column="registerTime" jdbcType="VARCHAR" property="registerTime" />
+  </resultMap>
+  
+ <select id="findCountAll" resultType="java.lang.Integer">
+  select count(*) from partners 
+ </select>
+ 
+  <select id="findAllPartners" resultMap="BaseResultMap">
+  select * from partners 
+  <where>
+  	<if test="key!=null">
+  	companyName like concat('%',#{key},'%') 
+  	</if>
+  </where>
+  limit #{begin},#{limit}
+ </select>
+ 
+  <select id="findCountAllByKey" resultType="java.lang.Integer">
+  select count(*) from partners where companyName like concat('%',#{key},'%')
+  </select>
+  
+  <select id="findPartnersById" resultMap="BaseResultMap">
+   select * from partners  where id =#{id}
+  </select>
+  
+  <update id="updatePartners" parameterType="com.dascom.product.entity.Partners">
+   update partners
+    set 
+      permission = #{permission,jdbcType=VARCHAR},
+      rank = #{rank,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <delete id="deletePartners" parameterType="com.dascom.product.entity.Partners">
+    delete from partners
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+</mapper>
