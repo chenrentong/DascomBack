@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.dascom.product.entity.Product" table="product">
+		<id name="pid">
+			<generator class="native"/>
+		</id>
+		<property name="pname"/>
+		<property name="pimage"/>
+		<property name="pintroduce"/>
+		
+		<many-to-one name="product_Type" lazy="false" class="com.dascom.product.entity.Product_Type" column="ptid"/>
+		
+		<!-- <many-to-one name="sdrive" lazy="false" class="com.dascom.software.entity.Software" column="pdriveid" />
+		<many-to-one name="sfirmware" lazy="false" class="com.dascom.software.entity.Software" column="pfirmwareid" />
+		<many-to-one name="stool" lazy="false" class="com.dascom.software.entity.Software" column="ptoolid" />
+		<many-to-one name="sguide" lazy="false" class="com.dascom.software.entity.Software" column="pguideid" />
+		<many-to-one name="skit" lazy="false" class="com.dascom.software.entity.Software" column="kitid" /> -->
+		<property name="pdriveid"/>
+		<property name="pfirmwareid"/>
+		<property name="ptoolid"/>
+		<property name="pguideid"/>
+		<property name="kitid"/>
+		<property name="softid"/>
+		<property name="videoid"/>
+		
+		
+	</class>
+</hibernate-mapping>

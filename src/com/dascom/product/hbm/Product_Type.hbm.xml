@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.dascom.product.entity.Product_Type" table="product_type">
+		<id name="ptid">
+			<generator class="native"/>
+		</id>
+		<property name="ptname"/>
+		<property name="ptimage"/>
+		
+		<!-- 产品与产品类型的关联 -->
+		<set name="products">
+			<key column="ptid"/>
+			<one-to-many class="com.dascom.product.entity.Product"/>
+		</set>
+		<set name="posts">
+			<key column="ptid"></key>
+			<one-to-many class="com.dascom.product.entity.Post"/>
+		</set>
+	</class>
+</hibernate-mapping>

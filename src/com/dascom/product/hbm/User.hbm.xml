@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.dascom.product.entity.User" table="user">
+		<id name="uid">
+			<generator class="native"/>
+		</id>
+		<property name="username"/>
+		<property name="password"/>
+		<property name="email"/>
+		<property name="phone"/>
+		<property name="auditstate"/>
+		
+		<set name="posts">
+			<key column="uid"></key>
+			<one-to-many class="com.dascom.product.entity.Post"/>
+		</set>
+		<set name="comments">
+			<key column="uid"></key>
+			<one-to-many class="com.dascom.product.entity.Comments"/>
+		</set>
+		<set name="templates">
+			<key column="uid"></key>
+			<one-to-many class="com.dascom.product.entity.Template"/>
+		</set>
+	</class>
+</hibernate-mapping>

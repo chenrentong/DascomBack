@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.dascom.product.entity.Comments" table="comments">
+		<id name="cid">
+			<generator class="native"></generator>
+		</id>
+		<property name="ccontent"/>
+		<property name="ctime"/>
+		
+		<many-to-one name="user" class="com.dascom.product.entity.User" lazy="false" column="uid"/>
+		<many-to-one name="post" class="com.dascom.product.entity.Post" lazy="false" column="postid"/>
+	</class>
+</hibernate-mapping>

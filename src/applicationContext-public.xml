@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.1.xsd 
+	http://www.springframework.org/schema/tx 
+	http://www.springframework.org/schema/tx/spring-tx.xsd
+	http://www.springframework.org/schema/aop
+    http://www.springframework.org/schema/aop/spring-aop-3.0.xsd" 
+	xmlns:tx="http://www.springframework.org/schema/tx">
+
+	<!-- 引入外部属性文件 -->
+	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">  
+    <property name="locations">  
+        <list>  
+            <value>classpath:jdbc.properties</value>  
+        </list>  
+    </property>  
+	</bean>  
+	<bean id="dataSource"
+		class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="url"
+			value="${jdbc.url}">
+		</property>
+		<property name="username" value="${jdbc.user}"></property>
+		<property name="password" value="${jdbc.password}"></property>
+		 <property name="driverClassName" value="${jdbc.driver}" />      
+	</bean>
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+		<property name="mappingResources">
+		<!-- 列出Hibernate映射文件 -->
+			<list>
+				<value> com/dascom/product/hbm/Comments.hbm.xml</value>
+				<value> com/dascom/product/hbm/Post.hbm.xml</value>
+				<value> com/dascom/product/hbm/Problem.hbm.xml</value>
+				<value> com/dascom/product/hbm/Product_Type.hbm.xml</value>
+				<value> com/dascom/product/hbm/Product_Video.hbm.xml</value>
+				<value> com/dascom/product/hbm/Product.hbm.xml</value>
+				<value> com/dascom/product/hbm/Software_Type.hbm.xml</value>
+				<value> com/dascom/product/hbm/Software.hbm.xml</value>
+				<value> com/dascom/product/hbm/Solution.hbm.xml</value>
+				<value> com/dascom/product/hbm/Template.hbm.xml</value>
+				<value> com/dascom/product/hbm/User.hbm.xml</value>
+				<value> com/dascom/product/hbm/DataSharing.hbm.xml</value>	
+				<value> com/dascom/product/hbm/Partners.hbm.xml</value>	
+			</list>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+				<!-- 支持动态更新表结构映射 -->
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.myeclipse.connection.profile">P2P_CREDIT_TEST</prop>
+				<!-- sql按格式输出 -->
+				<prop key="hibernate.format_sql">true</prop>
+				<prop key="hibernate.use_sql_comments">true</prop>
+				
+				<!-- 关闭 bean validate 验证模式-->
+				<prop key="hibernate.javax.persistence.validation.model">none</prop>
+				<!-- 避免getCurrentSession时找不到session,但是查询也需要开启事务了 -->
+				<prop key="hibernate.current_session_context_class">org.springframework.orm.hibernate4.SpringSessionContext</prop>
+			</props>
+		</property>
+	</bean>
+	<bean id="txManager"
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<!--tx:annotation-driven transaction-manager="txManager"/-->
+	
+	<tx:advice id="txAdvice" transaction-manager="txManager"> 
+	<tx:attributes> 
+	<tx:method name="*" propagation="REQUIRED"/> 
+	</tx:attributes> 
+	</tx:advice> 
+
+	<!-- aop编程,在调用操作那里增加事务控制 -->
+	<aop:config>
+        <aop:pointcut id="allManagerMethod" expression="execution(* com.dascom.product.serviceImpl..*.*(..))"/>
+        <aop:advisor pointcut-ref="allManagerMethod" advice-ref="txAdvice"/>
+    </aop:config>
+
+	
+	<!-- Dao配置 ========================= -->
+	<bean id="product_TypeDao" class="com.dascom.product.dao.Product_TypeDao">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	<bean id="product_VideoDao" class="com.dascom.product.dao.Product_VideoDao">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	<bean id="productDao" class="com.dascom.product.dao.ProductDao">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	<bean id="softwareDao" class="com.dascom.product.dao.SoftwareDao">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	<bean id="dataSharingDao" class="com.dascom.product.dao.DataSharingDao">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	<bean id="partnersDao" class="com.dascom.product.dao.PartnersDao">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>	
+	
+	<bean id="hibernateTemplate" class="com.dascom.product.util.HibernateTemplate" />  
+</beans>

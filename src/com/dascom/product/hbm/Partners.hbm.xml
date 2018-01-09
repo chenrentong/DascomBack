@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.dascom.product.entity.Partners" table="partners">
+		<id name="id">
+			<generator class="native"/>
+		</id>
+		<property name="companyName"/>
+		<property name="legalName"/>
+		<property name="dutyCode"/>
+		<property name="phone"/>
+		<property name="fax"/>
+		<property name="email"/>
+		<property name="url"/>
+		<property name="postCountry"/>
+		<property name="postProvince"/>
+		<property name="postCity"/>
+		<property name="postArea"/>
+		<property name="postStreet"/>
+		<property name="postNumber"/>
+		<property name="companyCountry"/>
+		<property name="companyProvince"/>
+		<property name="companyCity"/>
+		<property name="companyArea"/>
+		<property name="companyStreet"/>
+		<property name="companyPostNumber"/>
+		<property name="personName"/>
+		<property name="personLastName"/>
+		<property name="personCall"/>
+		<property name="personFunction"/>
+		<property name="personEmail"/>
+		<property name="personPhone"/>
+		<property name="personPostNumber"/>
+		<property name="personMobilePhone"/>
+		<property name="personCountry"/>
+		<property name="personProvince"/>
+		<property name="personCity"/>
+		<property name="personAllowType"/>
+		<property name="permission"/>
+		<property name="rank"/>
+		<property name="registerTime"  />	
+		<property name="status"/>
+		<property name="code"/>
+		<property name="uid"  />		
+	</class>
+</hibernate-mapping>
